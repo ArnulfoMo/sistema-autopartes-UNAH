@@ -1,0 +1,33 @@
+# Configuracion local
+.env
+.env.*
+!.env.example
+config/config.local.php
+config/conexion.local.php
+
+# Dependencias
+/vendor/
+/node_modules/
+
+# Archivos subidos por usuarios
+/uploads/*
+!/uploads/.gitkeep
+
+# Archivos temporales
+*.log
+*.tmp
+*.cache
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+
+# Copias de seguridad
+*.bak
+*.sql.bak
+*.zip
