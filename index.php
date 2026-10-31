@@ -2,8 +2,6 @@
 <?php
 $tituloPagina = "Inicio | Autopartes Don Pancho";
 
-// Aquí se cargarán los 5 productos desde MySQL.
-// Se conectará con la clase Producto.php del integrante 2.
 $productosDestacados = [];
 
 require_once __DIR__ . '/includes/header.php';

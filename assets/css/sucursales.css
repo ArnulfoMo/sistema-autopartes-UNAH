@@ -1,0 +1,61 @@
+
+/* colores seccion */
+.fondo-blanco {
+    background-color: #ffffff;
+}
+
+.fondo-gris {
+    background-color: #e9ecef;
+}
+
+/* cards */
+.sucursal-card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sucursal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* iconoL */
+.sucursal-icono {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ffc107;
+    color: #212529;
+
+    border-radius: 50%;
+    font-size: 30px;
+}
+
+/* info */
+.sucursal-card p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.sucursal-card hr {
+    border-color: #dee2e6;
+    margin-bottom: 25px;
+}
+
+/* btn */
+.sucursal-card .btn-warning {
+    border-radius: 7px;
+    padding: 12px;
+}
+
+/* celular */
+@media (max-width: 768px) {
+    .sucursal-card {
+        margin-bottom: 10px;
+    }
+}
