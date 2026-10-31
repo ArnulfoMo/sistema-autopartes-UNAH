@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$usuario = $_SESSION['usuario'] ?? null;
+$usuario = $_SESSION['nombre'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
 
 
@@ -36,7 +36,7 @@ $pagina = basename($_SERVER['PHP_SELF'], '.php');
     <?php if (file_exists(__DIR__ . '/../assets/css/' . $pagina . '.css')): ?>
         <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/<?= $pagina ?>.css">
     <?php endif; ?>
-    
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
