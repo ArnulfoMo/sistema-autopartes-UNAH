@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) {
 
             error_log("Error en login: " . $e->getMessage());
-             $error = "Error técnico: " . $e->getMessage();
+            $error = "Ocurrió un error técnico. Intentá de nuevo.";
         }
     }
 }
