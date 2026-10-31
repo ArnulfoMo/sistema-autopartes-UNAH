@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) {
 
             error_log("Error en login: " . $e->getMessage());
-              $error = "Error técnico: " . $e->getMessage();
+            $error = "Ocurrió un error al iniciar sesión.";
         }
     }
 }
@@ -64,53 +64,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Iniciar Sesión | Don Pancho</title>
+
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 
 <body>
 
-    <h1>Autopartes y Repuestos Don Pancho</h1>
+    <main class="login-contenedor">
 
-    <h2>Iniciar Sesión</h2>
+        <div class="login-encabezado">
 
-    <?php if ($error !== ""): ?>
-        <p style="color: red;">
-            <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
-        </p>
-    <?php endif; ?>
+        <div class="login-logo">
+            <img src="assets/img/logo.png" alt="Logo Autopartes Don Pancho">
+        </div>
 
-    <form method="POST" action="">
+            <h1>Autopartes Don Pancho</h1>
 
-        <label for="usuario">Usuario:</label>
-        <br>
+            <p>Expertos en Repuestos Genuinos y Compatibles</p>
 
-        <input
-            type="text"
-            id="usuario"
-            name="usuario"
-            value="<?= htmlspecialchars($usuarioIngresado, ENT_QUOTES, 'UTF-8') ?>"
-            autocomplete="username"
-            required
-        >
+        </div>
 
-        <br><br>
+        <div class="login-formulario">
 
-        <label for="clave">Contraseña:</label>
-        <br>
+            <h2>Iniciar sesión</h2>
 
-        <input
-            type="password"
-            id="clave"
-            name="clave"
-            autocomplete="current-password"
-            required
-        >
+            <p class="login-subtitulo">
+                Ingresa tus credenciales para continuar
+            </p>
 
-        <br><br>
+            <?php if ($error !== ""): ?>
 
-        <button type="submit">Ingresar</button>
+                <div class="login-error" role="alert">
+                    <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+                </div>
 
-    </form>
+            <?php endif; ?>
+
+            <form method="POST" action="">
+
+                <div class="campo">
+                    <label for="usuario">Usuario</label>
+
+                    <input
+                        type="text"
+                        id="usuario"
+                        name="usuario"
+                        placeholder="Ingresa tu usuario"
+                        value="<?= htmlspecialchars($usuarioIngresado, ENT_QUOTES, 'UTF-8') ?>"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="clave">Contraseña</label>
+
+                    <input
+                        type="password"
+                        id="clave"
+                        name="clave"
+                        placeholder="Ingresa tu contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-ingresar">
+                    Ingresar
+                </button>
+
+            </form>
+
+            <div class="login-volver">
+                <a href="index.php">
+                    ← Volver al inicio
+                </a>
+            </div>
+
+        </div>
+
+        <div class="login-pie">
+            © <?= date('Y') ?> Autopartes Don Pancho
+        </div>
+
+    </main>
 
 </body>
 </html>

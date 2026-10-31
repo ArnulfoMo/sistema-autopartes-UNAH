@@ -41,13 +41,14 @@ $pagina = basename($_SERVER['PHP_SELF'], '.php');
 
 <body class="d-flex flex-column min-vh-100">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
 
-        <a class="navbar-brand fw-bold"
-           href="<?= $baseUrl ?>index.php">
+        <a class="navbar-brand d-flex align-items-center"
+        href="<?= $baseUrl ?>index.php">
 
-            <i class="bi bi-tools text-warning"></i>
+            <img src="<?= $baseUrl ?>assets/img/logo.png" alt="" class="logo-navbar">
+
         </a>
 
         <!-- Celular -->

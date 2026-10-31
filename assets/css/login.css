@@ -1,0 +1,207 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+/* containerL */
+.login-contenedor {
+    width: 100%;
+    max-width: 430px;
+
+    background-color: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* header */
+.login-encabezado {
+    background-color: #212529;
+    color: #ffffff;
+
+    padding: 30px 25px;
+    text-align: center;
+}
+
+.login-icono {
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 18px;
+
+    background-color: #ffc107;
+    color: #212529;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.login-encabezado h1 {
+    font-size: 24px;
+    margin: 0 0 10px;
+}
+
+.login-encabezado p {
+    margin: 0;
+    color: #ced4da;
+    font-size: 13px;
+}
+
+/* formulario */
+.login-formulario {
+    padding: 30px;
+}
+
+.login-formulario h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 23px;
+}
+
+.login-subtitulo {
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+    margin: 10px 0 25px;
+}
+
+/* inputs */
+.campo {
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.campo input {
+    width: 100%;
+    padding: 12px 14px;
+
+    border: 1px solid #ced4da;
+    border-radius: 7px;
+
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+}
+
+/* btn */
+.btn-ingresar {
+    width: 100%;
+    padding: 13px;
+
+    background-color: #ffc107;
+    color: #212529;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-ingresar:hover {
+    background-color: #e0a800;
+}
+
+/* errores */
+.login-error {
+    background-color: #f8d7da;
+    color: #842029;
+
+    padding: 12px;
+    margin-bottom: 20px;
+
+    border: 1px solid #f5c2c7;
+    border-radius: 7px;
+
+    text-align: center;
+    font-size: 14px;
+}
+
+/* para volver */
+.login-volver {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.login-volver a {
+    color: #495057;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-volver a:hover {
+    color: #212529;
+    text-decoration: underline;
+}
+
+/* footer */
+.login-pie {
+    padding: 15px;
+    text-align: center;
+
+    background-color: #f8f9fa;
+    color: #6c757d;
+
+    font-size: 12px;
+}
+
+/* Logo del login */
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.login-logo img {
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* celular */
+@media (max-width: 480px) {
+    .login-formulario {
+        padding: 25px 20px;
+    }
+
+    .login-encabezado h1 {
+        font-size: 21px;
+    }
+}
