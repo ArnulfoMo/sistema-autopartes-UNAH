@@ -1,21 +1,21 @@
 
 INSERT INTO usuarios
-(id_usuario, nombre, usuario, `password`, rol)
+(id_usuario, nombre, usuario, `contraseña`, rol)
 VALUES
 (1, 'Administrador Principal', 'admin',
-'DonPanchoadmin123@', 'admin'),
+'$2y$10$TTA/qCJSCCIL86.6AHAqB.5aFcgO2bbY57.0uIKHCJoJ.Ll/tl8Ny', 'admin'),
 
 (2, 'Carlos Mendoza', 'carlos',
-'DonPanchobodega123@', 'bodeguero'),
+'$2y$10$8EoNTGAowIWYV/TBA1VPbef5vPu7aN0hxA/59Ui2wsTPLG6eNC5D2', 'bodeguero'),
 
 (3, 'Ana Lopez', 'ana',
-'DonPanchobodega123@', 'bodeguero'),
+'$2y$10$PNkwKbf8ij1fTeu42YrzCePBmaxFXF2hRAllgYCAUhDU.MQtziIFG', 'bodeguero'),
 
 (4, 'Jose Martinez', 'jose',
-'DonPanchobodega123@', 'bodeguero'),
+'$2y$10$GhjtRiTw/HEer0AmfCCpBuY/5mpHA3cLCZupI0acR7pVCWe6wdSAq', 'bodeguero'),
 
 (5, 'Maria Flores', 'maria',
-'DonPanchobodega123@', 'bodeguero');
+'$2y$10$6eMUMLE0h0UUS3SEupUlaumHhJBCXSBhgLU5z2RtKvBlEJsDQi8LK', 'bodeguero');
 
 
 -- 2. CATEGORIAS

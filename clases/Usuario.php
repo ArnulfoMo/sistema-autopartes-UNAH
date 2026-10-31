@@ -32,7 +32,7 @@ class usuario {
             return null;
         }
         
-        if ($contra !== $datos['contraseña']) {
+        if (!password_verify($contra, $datos['contraseña'])) {
         return null;
         }
 
