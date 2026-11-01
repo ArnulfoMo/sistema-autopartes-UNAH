@@ -1,0 +1,95 @@
+.carrito-foto {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .5rem;
+    padding: 4px;
+}
+
+.input-cantidad {
+    width: 80px;
+    text-align: center;
+}
+
+.tabla-carrito th,
+.tabla-carrito td {
+    white-space: nowrap;
+}
+
+.tabla-carrito td:first-child {
+    white-space: normal;
+    min-width: 220px;
+}
+
+/* Resumen de montos: etiqueta a la izquierda, monto a la derecha */
+.resumen-lista {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: .5rem;
+    column-gap: 1rem;
+}
+
+.resumen-lista dt {
+    font-weight: 500;
+}
+
+.resumen-lista dd {
+    margin: 0;
+    text-align: right;
+}
+
+@media (min-width: 992px) {
+    .resumen-card {
+        position: sticky;
+        top: 90px;
+    }
+}
+
+/* Opciones de flete */
+.opcion-flete {
+    cursor: pointer;
+    transition: border-color .2s ease, background-color .2s ease;
+}
+
+.opcion-flete:hover {
+    border-color: #ffc107 !important;
+}
+
+.opcion-flete:has(input:checked) {
+    border-color: #ffc107 !important;
+    background-color: #fff8e1;
+}
+
+/* Factura */
+.factura-papel {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Toast del contador del carrito (agregado desde el catálogo) */
+.toast-carrito {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2000;
+    max-width: 320px;
+}
+
+@media print {
+    .no-imprimir,
+    nav,
+    footer {
+        display: none !important;
+    }
+
+    body {
+        background: #fff !important;
+    }
+
+    .factura-papel {
+        box-shadow: none !important;
+        border: 0 !important;
+    }
+}
