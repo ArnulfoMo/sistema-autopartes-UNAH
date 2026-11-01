@@ -8,7 +8,7 @@ $usuario = $_SESSION['nombre'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
 
 
-$baseUrl = '/don_pancho/';
+$baseUrl = '/sistema-autopartes-UNAH/';
 
 $tituloPagina = $tituloPagina ?? 'Autopartes Don Pancho';
 

@@ -9,9 +9,6 @@ config/conexion.local.php
 /vendor/
 /node_modules/
 
-# Archivos subidos por usuarios
-/uploads/*
-!/uploads/.gitkeep
 
 # Archivos temporales
 *.log
