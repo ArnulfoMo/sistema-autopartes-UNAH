@@ -1,0 +1,55 @@
+
+/* Banner principal */
+.hero-inicio {
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.80),
+        rgba(0, 0, 0, 0.65)
+    ),
+    url('../img/banner.png');
+
+    background-size: cover;
+    background-position: center;
+    min-height: 450px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tarjetas de productos */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    padding: 15px;
+}
+
+.fondo-blanco {
+    background-color: #ffffff;
+}
+
+.fondo-gris {
+    background-color: #e9ecef;
+}
+
+
+/* celulares */
+@media (max-width: 768px) {
+    .hero-inicio {
+        min-height: 350px;
+    }
+
+    .hero-inicio h1 {
+        font-size: 2rem;
+    }
+}
