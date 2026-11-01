@@ -3,188 +3,347 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../config/conexion.php';
 
-class Producto{
+class Producto {
+
     private PDO $conexion;
 
-    public function __construct ( PDO $db){
+    public function __construct(PDO $db) {
         $this->conexion = $db;
     }
 
-    //metodo que valida la imagen 
-    public function validarYSubirImagen (array $archivo): ?string {
-        
-            //Verificar que no haya errores de transmisión (CANDADO1)
-            if(!isset($archivo ['error']) || $archivo['error'] !== UPLOAD_ERR_OK){
-                return ["exito" => false, "mensaje"=> "Error al recibir el archivo desde el navegador Código: " . ($archivo['error'] ?? 'desconocido')];
-            }
+    // valida y suibe imagen
+    public function validarYSubirImagen(array $archivo): array {
 
-            //validar el tamañp de la archivo (CANDADO2)
-            $maxBytes = 4 * 1024 * 1024;
-            if($archivo['size'] > $maxBytes){
-                die("Error: El archivo excede el tamaño máximo permitido de 4 MB.");
-            }
-
-            //validar extensiones y el tipo de MIME real (CANDADO3)
-            $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
-            $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
-
-            if (!in_array($extension, $extensionesPermitidas, true)) {
-            die("Error: Extensión no permitida. Solo se aceptan imágenes JPG, PNG o WEBP.");
-            }
-
-            //Renombrar con identificador criptográfico único (CANDADO4)
-            $nuevoNombre = uniqid('prod_', true) . '.' . $extension;
-            $carpetaDestino = __DIR__ . '/../uploads/';
-
-            // Crear la carpeta si no existe
-            if (!is_dir($carpetaDestino)) {
-                mkdir($carpetaDestino, 0755, true);
-            }
-            $rutaFinal = $carpetaDestino . $nuevoNombre;
-
-            // TRASLADO SEGURO: Mover desde la bodega temporal al directorio final
-            if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
-                return ["exito" => false, "mensaje" => "Error al mover el archivo al directorio final."];
-            }
-
-            return ["exito" => true, "nombre_archivo" => $nuevoNombre];
+        // CANDADO 1: Verificar errores
+        if (!isset($archivo['error']) || $archivo['error'] !== UPLOAD_ERR_OK) {
+            return [
+                "exito" => false,
+                "mensaje" => "Error al recibir la imagen."
+            ];
         }
 
-        public function registrarProducto (array $datos, ?string $nombreImagen): bool {
-            try{
-                $query = "INSERT INTO productos 
-                (id_categoria, nombre, descripcion, especificaciones, precio, fotografia, marca_vehiculo, tipo_vehiculo, viscosidad)
-                VALUES (:id_categoria, :nombre, :descripcion, :especificaciones, :precio, :fotografia, :marca_vehiculo, :tipo_vehiculo, :viscosidad)";
-                $stmt = $this->conexion->prepare($query);
-            
-                // Vincular cada parámetro con su valor del formulario o de la imagen
-                $stmt->bindParam(':id_categoria', $datos['id_categoria'], PDO::PARAM_INT);
-                $stmt->bindParam(':nombre', $datos['nombre']);
-                $stmt->bindParam(':descripcion', $datos['descripcion']);
-                $stmt->bindParam(':especificaciones', $datos['especificaciones']);
-                $stmt->bindParam(':precio', $datos['precio']);
-                $stmt->bindParam(':fotografia', $nombreImagen);
-                $stmt->bindParam(':marca_vehiculo', $datos['marca_vehiculo']);
-                $stmt->bindParam(':tipo_vehiculo', $datos['tipo_vehiculo']);
-                $stmt->bindParam(':viscosidad', $datos['viscosidad']);
+        // CANDADO 2: Limitar tamaño a 4 MB
+        $maxBytes = 4 * 1024 * 1024;
 
-                if ($stmt->execute()) {
-                return ["exito" => true, "mensaje" => "Repuesto registrado correctamente en la base de datos."];
-                } else {
-                return ["exito" => false, "mensaje" => "Error al registrar el producto en la base de datos."];
-                }
-
-            } catch (PDOException $e) {
-            return ["exito" => false, "mensaje" => "Error de base de datos: " . $e->getMessage()];
-            }
+        if ($archivo['size'] > $maxBytes) {
+            return [
+                "exito" => false,
+                "mensaje" => "La imagen no puede superar los 4 MB."
+            ];
         }
 
-        //metodo para  listar el inventario o sucursal 
-        public function obtenerInventario (?int $sucursal_id = null): array {
-            $query = "SELECT p.id_producto, p.id_categoria, p.nombre, p.descripcion, p.especificaciones, p.precio, p.fotografia, p.marca_vehiculo, p.tipo_vehiculo, 
-                    p.viscosidad, p.activo, i.id_inventario, i.id_sucursal, s.nombre AS sucursal,
-                    COALESCE(i.cantidad, 0) AS cantidad
-                    FROM productos p
-                    LEFT JOIN inventario i
-                        ON p.id_producto = i.id_producto
-                        AND i.activo = 1
-                    LEFT JOIN sucursales s
-                        ON i.id_sucursal = s.id_sucursal
-                    WHERE p.activo = 1";
+        // CANDADO 3: Validar extensión y MIME
+        $extension = strtolower(
+            pathinfo($archivo['name'], PATHINFO_EXTENSION)
+        );
 
-            if ($sucursal_id !== null) {
-                $sql .= " AND i.id_sucursal = :sucursal_id";
-            }
+        $extensionesPermitidas = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp'
+        ];
 
-            $sql .= " ORDER BY p.nombre ASC";
+        if (!isset($extensionesPermitidas[$extension])) {
+            return [
+                "exito" => false,
+                "mensaje" => "Formato de imagen no permitido."
+            ];
+        }
 
-            $consulta = $this->conexion->prepare($sql);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeReal = finfo_file($finfo, $archivo['tmp_name']);
+        finfo_close($finfo);
 
-            if ($sucursal_id !== null) {
-                $consulta->bindValue(':sucursal_id', $sucursal_id, PDO::PARAM_INT);
-            }
+        if ($mimeReal !== $extensionesPermitidas[$extension]) {
+            return [
+                "exito" => false,
+                "mensaje" => "El tipo de imagen no es válido."
+            ];
+        }
 
-            $consulta->execute();
+        // CANDADO 4: Nombre criptográfico único
+        try {
+            $nuevoNombre = bin2hex(random_bytes(16)) . '.' . $extension;
+        } catch (Exception $e) {
+            return [
+                "exito" => false,
+                "mensaje" => "No se pudo generar el nombre de la imagen."
+            ];
+        }
 
-            return $consulta->fetchAll();
+        $carpetaDestino = __DIR__ . '/../uploads/productos/';
+
+        if (!is_dir($carpetaDestino)) {
+            mkdir($carpetaDestino, 0755, true);
+        }
+
+        $rutaFinal = $carpetaDestino . $nuevoNombre;
+
+        if (!is_uploaded_file($archivo['tmp_name'])) {
+            return [
+                "exito" => false,
+                "mensaje" => "Archivo de subida no válido."
+            ];
+        }
+
+        if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
+            return [
+                "exito" => false,
+                "mensaje" => "No se pudo guardar la imagen."
+            ];
+        }
+
+        return [
+            "exito" => true,
+            "nombre_archivo" => $nuevoNombre
+        ];
     }
 
-        //metodo para obener productor segun su id 
-        public function obtenerPorId($id){
-            $query = "SELECT * FROM productos WHERE id = :id LIMIT 1";
+
+    public function registrarProducto(array $datos, ?string $nombreImagen): array {
+
+        try {
+
+            $query = "INSERT INTO productos
+            (id_categoria, nombre, descripcion, especificaciones,
+            precio, fotografia, marca_vehiculo, tipo_vehiculo, viscosidad)
+
+            VALUES
+            (:id_categoria, :nombre, :descripcion, :especificaciones,
+            :precio, :fotografia, :marca_vehiculo, :tipo_vehiculo, :viscosidad)";
+
             $stmt = $this->conexion->prepare($query);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $stmt->execute([
+                ':id_categoria' => $datos['id_categoria'],
+                ':nombre' => $datos['nombre'],
+                ':descripcion' => $datos['descripcion'],
+                ':especificaciones' => $datos['especificaciones'],
+                ':precio' => $datos['precio'],
+                ':fotografia' => $nombreImagen,
+                ':marca_vehiculo' => $datos['marca_vehiculo'],
+                ':tipo_vehiculo' => $datos['tipo_vehiculo'],
+                ':viscosidad' => $datos['viscosidad']
+            ]);
+
+            return [
+                "exito" => true,
+                "mensaje" => "Producto registrado correctamente."
+            ];
+
+        } catch (PDOException $e) {
+
+            error_log("ERROR REGISTRANDO PRODUCTO: " . $e->getMessage());
+
+            return [
+                "exito" => false,
+                "mensaje" => $e->getMessage()
+            ];
+        }
+    }
+
+
+    public function obtenerInventario(?int $sucursal_id = null): array {
+
+        $query = "SELECT
+                    p.id_producto,
+                    p.id_categoria,
+                    p.nombre,
+                    p.descripcion,
+                    p.especificaciones,
+                    p.precio,
+                    p.fotografia,
+                    p.marca_vehiculo,
+                    p.tipo_vehiculo,
+                    p.viscosidad,
+                    p.activo,
+                    i.id_inventario,
+                    i.id_sucursal,
+                    s.nombre AS sucursal,
+                    c.nombre AS categoria,
+                    COALESCE(i.cantidad, 0) AS cantidad
+
+                  FROM productos p
+
+                  LEFT JOIN inventario i
+                    ON p.id_producto = i.id_producto
+                    AND i.activo = 1
+
+                  LEFT JOIN sucursales s
+                    ON i.id_sucursal = s.id_sucursal
+
+                  LEFT JOIN categorias c
+                  ON p.id_categoria = c.id_categoria
+
+                  WHERE p.activo = 1";
+
+        if ($sucursal_id !== null) {
+            $query .= " AND i.id_sucursal = :sucursal_id";
         }
 
-        //metodo para actualizar un producto 
-        public function actualizar($id, $datos) {
-            try {
-            // Si se subió una nueva imagen, actualizamos también el campo fotografia
-            if ($nombreImagen) {
-                $query = "UPDATE productos SET 
-                        id_categoria = :id_categoria, 
-                        nombre = :nombre, 
-                        descripcion = :descripcion, 
-                        especificaciones = :especificaciones, 
-                        precio = :precio, 
-                        fotografia = :fotografia, 
-                        marca_vehiculo = :marca_vehiculo, 
-                        tipo_vehiculo = :tipo_vehiculo, 
-                        viscosidad = :viscosidad 
-                        WHERE id_producto = :id_producto";
+        $query .= " ORDER BY p.nombre ASC";
+
+        $stmt = $this->conexion->prepare($query);
+
+        if ($sucursal_id !== null) {
+            $stmt->bindValue(':sucursal_id', $sucursal_id, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
+    // BUSCAR PRODUCTO POR ID
+    public function obtenerPorId(int $id): ?array {
+
+        $query = "SELECT *
+                  FROM productos
+                  WHERE id_producto = :id
+                  AND activo = 1
+                  LIMIT 1";
+
+        $stmt = $this->conexion->prepare($query);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $resultado = $stmt->fetch();
+
+        return $resultado ?: null;
+    }
+
+
+    public function buscarProducto(string $busqueda): array {
+
+        $query = "SELECT id_producto, nombre, precio, fotografia
+                  FROM productos
+                  WHERE activo = 1
+                  AND (
+                      nombre LIKE :nombre
+                      OR id_producto = :id
+                  )
+                  ORDER BY nombre ASC
+                  LIMIT 20";
+
+        $stmt = $this->conexion->prepare($query);
+
+        $id = ctype_digit($busqueda) ? (int)$busqueda : 0;
+
+        $stmt->execute([
+            ':nombre' => '%' . $busqueda . '%',
+            ':id' => $id
+        ]);
+
+        return $stmt->fetchAll();
+    }
+
+
+    public function actualizar(
+        int $id,
+        array $datos,
+        ?string $nombreImagen = null
+    ): array {
+
+        try {
+
+            if ($nombreImagen !== null) {
+
+                $query = "UPDATE productos SET
+                            id_categoria = :id_categoria,
+                            nombre = :nombre,
+                            descripcion = :descripcion,
+                            especificaciones = :especificaciones,
+                            precio = :precio,
+                            fotografia = :fotografia,
+                            marca_vehiculo = :marca_vehiculo,
+                            tipo_vehiculo = :tipo_vehiculo,
+                            viscosidad = :viscosidad
+                          WHERE id_producto = :id_producto";
+
             } else {
-                // Si no se cambió la imagen, mantenemos la que ya estaba registrada
-                $query = "UPDATE productos SET 
-                        id_categoria = :id_categoria, 
-                        nombre = :nombre, 
-                        descripcion = :descripcion, 
-                        especificaciones = :especificaciones, 
-                        precio = :precio, 
-                        marca_vehiculo = :marca_vehiculo, 
-                        tipo_vehiculo = :tipo_vehiculo, 
-                        viscosidad = :viscosidad 
-                        WHERE id_producto = :id_producto";
+
+                $query = "UPDATE productos SET
+                            id_categoria = :id_categoria,
+                            nombre = :nombre,
+                            descripcion = :descripcion,
+                            especificaciones = :especificaciones,
+                            precio = :precio,
+                            marca_vehiculo = :marca_vehiculo,
+                            tipo_vehiculo = :tipo_vehiculo,
+                            viscosidad = :viscosidad
+                          WHERE id_producto = :id_producto";
             }
 
             $stmt = $this->conexion->prepare($query);
-            
-            $stmt->bindParam(':id_producto', $id_producto, PDO::PARAM_INT);
-            $stmt->bindParam(':id_categoria', $datos['id_categoria'], PDO::PARAM_INT);
-            $stmt->bindParam(':nombre', $datos['nombre']);
-            $stmt->bindParam(':descripcion', $datos['descripcion']);
-            $stmt->bindParam(':especificaciones', $datos['especificaciones']);
-            $stmt->bindParam(':precio', $datos['precio']);
-            $stmt->bindParam(':marca_vehiculo', $datos['marca_vehiculo']);
-            $stmt->bindParam(':tipo_vehiculo', $datos['tipo_vehiculo']);
-            $stmt->bindParam(':viscosidad', $datos['viscosidad']);
 
-            if ($nombreImagen) {
-                $stmt->bindParam(':fotografia', $nombreImagen);
+            $parametros = [
+                ':id_producto' => $id,
+                ':id_categoria' => $datos['id_categoria'],
+                ':nombre' => $datos['nombre'],
+                ':descripcion' => $datos['descripcion'],
+                ':especificaciones' => $datos['especificaciones'],
+                ':precio' => $datos['precio'],
+                ':marca_vehiculo' => $datos['marca_vehiculo'],
+                ':tipo_vehiculo' => $datos['tipo_vehiculo'],
+                ':viscosidad' => $datos['viscosidad']
+            ];
+
+            if ($nombreImagen !== null) {
+                $parametros[':fotografia'] = $nombreImagen;
             }
 
-            return $stmt->execute() 
-                ? ["exito" => true, "mensaje" => "Repuesto actualizado exitosamente."] 
-                : ["exito" => false, "mensaje" => "No se pudo actualizar el repuesto."];
+            $stmt->execute($parametros);
 
-            } catch (PDOException $e) {
-                return ["exito" => false, "mensaje" => "Error de base de datos: " . $e->getMessage()];
-            }
-        }   
+            return [
+                "exito" => true,
+                "mensaje" => "Producto actualizado correctamente."
+            ];
 
-        // Método para eliminar un producto
-        public function eliminar(int $id): bool {
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+
+            return [
+                "exito" => false,
+                "mensaje" => "Error al actualizar el producto."
+            ];
+        }
+    }
+
+
+    public function eliminar(int $id): array {
+
+        try {
+
             $query = "UPDATE productos
-                    SET activo = 0
-                    WHERE id_producto = :id";
+                      SET activo = 0
+                      WHERE id_producto = :id";
 
-            $stmt = $this->conexion->prepare($sql);
+            $stmt = $this->conexion->prepare($query);
 
-            return $consulta->execute([
+            $stmt->execute([
                 ':id' => $id
             ]);
-    }
+
+            return [
+                "exito" => true,
+                "mensaje" => "Producto desactivado correctamente."
+            ];
+
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+
+            return [
+                "exito" => false,
+                "mensaje" => "No se pudo desactivar el producto."
+            ];
+        }
     }
 
+}
 ?>
