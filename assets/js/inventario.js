@@ -32,7 +32,7 @@ async function buscarProductos(termino, contenedor, tipo) {
     try {
 
         const respuesta = await fetch(
-            "procesar_producto.php?accion=buscar&termino=" +
+            "procesar_repuesto.php?accion=buscar&termino=" +
             encodeURIComponent(termino)
         );
 
