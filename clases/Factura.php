@@ -32,7 +32,7 @@ class Factura
     {
         return preg_replace('/\D+/', '', $rtn) ?? '';
     }
-/
+
     public static function rtnValido(string $rtn): bool
     {
         return preg_match('/^\d{14}$/', $rtn) === 1;
