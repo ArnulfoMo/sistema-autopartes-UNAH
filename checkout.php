@@ -168,7 +168,6 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </div>
 
-            <!-- Resumen -->
             <div class="col-lg-5">
                 <div class="card shadow-sm resumen-card" id="resumenCheckout"
                      data-subtotal="<?= $totales['subtotal'] ?>"
