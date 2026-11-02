@@ -160,3 +160,4 @@ class KitMantenimiento
         return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
