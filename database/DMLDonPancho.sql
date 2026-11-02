@@ -404,6 +404,35 @@ VALUES
 (5, 5, 5, 2, 1450.00, 2900.00);
 
 
+
+UPDATE productos
+SET fotografia = CASE id_producto
+    WHEN 6 THEN 'aceite_toyota_5w30.jpg'
+    WHEN 7 THEN 'filtro_aceite_toyota.jpg'
+    WHEN 8 THEN 'filtro_aire_toyota.jpg'
+    WHEN 9 THEN 'bujias_toyota.jpg'
+
+    WHEN 10 THEN 'aceite_honda_0w20.jpg'
+    WHEN 11 THEN 'filtro_aceite_honda.jpg'
+    WHEN 12 THEN 'filtro_aire_honda.jpg'
+    WHEN 13 THEN 'bujias_honda.jpg'
+
+    WHEN 14 THEN 'aceite_hyundai_5w30.jpg'
+    WHEN 15 THEN 'filtro_aceite_hyundai.jpg'
+    WHEN 16 THEN 'filtro_aire_hyundai.jpg'
+    WHEN 17 THEN 'bujias_hyundai.jpg'
+
+    WHEN 18 THEN 'aceite_nissan_5w30.jpg'
+    WHEN 19 THEN 'filtro_aceite_nissan.jpg'
+    WHEN 20 THEN 'filtro_aire_nissan.jpg'
+    WHEN 21 THEN 'bujias_nissan.jpg'
+
+    WHEN 22 THEN 'aceite_hilux_15w40.jpg'
+    WHEN 23 THEN 'filtro_aceite_hilux.jpg'
+    WHEN 24 THEN 'filtro_aire_hilux.jpg'
+    WHEN 25 THEN 'bujias_hilux.jpg'
+END
+WHERE id_producto BETWEEN 6 AND 25;
 -- ============================================================
 -- FIN DEL DML
 -- ============================================================
