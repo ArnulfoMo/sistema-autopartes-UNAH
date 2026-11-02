@@ -1,0 +1,149 @@
+
+.kit-header {
+    padding: 30px 15px;
+}
+
+.kit-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.kit-header p {
+    color: #777;
+}
+
+.kit-section {
+    background: #ffffff;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+}
+
+.kit-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+.kit-producto {
+    height: 100%;
+    padding: 18px;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.kit-producto:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.kit-producto-cabecera {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.kit-producto-cabecera label {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.kit-producto-cabecera input {
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.kit-descripcion {
+    font-size: 0.9rem;
+    color: #777;
+    min-height: 45px;
+}
+
+.kit-producto-precio {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #198754;
+    margin: 15px 0;
+}
+
+.kit-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.kit-cantidad label {
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+
+.kit-cantidad input {
+    max-width: 90px;
+}
+
+.kit-resumen {
+    background: #f8f9fa;
+}
+
+.kit-resumen-producto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.kit-resumen-producto div {
+    display: flex;
+    flex-direction: column;
+}
+
+.kit-resumen-producto small {
+    color: #777;
+}
+
+.kit-resumen-producto > span {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.kit-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    margin-top: 15px;
+    border-top: 2px solid #ddd;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.kit-total span:last-child {
+    color: #198754;
+}
+
+#btnAgregarCarrito {
+    padding: 13px;
+    font-weight: 600;
+}
+
+@media (max-width: 576px) {
+
+    .kit-section {
+        padding: 18px;
+    }
+
+    .kit-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .kit-total {
+        font-size: 1.1rem;
+    }
+
+}

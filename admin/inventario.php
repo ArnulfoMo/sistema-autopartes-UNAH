@@ -172,7 +172,7 @@ $inventario = $producto->obtenerInventario($sucursalSeleccionada);
     <div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="procesar_producto.php" method="POST" enctype="multipart/form-data">
+                <form action="procesar_repuesto.php" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title fw-bold" id="modalCrearLabel">Crear producto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -271,7 +271,7 @@ $inventario = $producto->obtenerInventario($sucursalSeleccionada);
     <div class="modal fade" id="modalActualizar" tabindex="-1" aria-labelledby="modalActualizarLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="procesar_producto.php" method="POST" enctype="multipart/form-data">
+                <form action="procesar_repuesto.php" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title fw-bold" id="modalActualizarLabel">Actualizar producto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -316,7 +316,7 @@ $inventario = $producto->obtenerInventario($sucursalSeleccionada);
     <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="procesar_producto.php" method="POST">
+                <form action="procesar_repuesto.php" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title fw-bold text-danger" id="modalEliminarLabel">Eliminar producto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -219,26 +219,42 @@ class Producto {
 
     public function buscarProducto(string $busqueda): array {
 
+        $busqueda = trim($busqueda);
+
+        if ($busqueda === '') {
+            return [];
+        }
+
         $query = "SELECT id_producto, nombre, precio, fotografia
-                  FROM productos
-                  WHERE activo = 1
-                  AND (
-                      nombre LIKE :nombre
-                      OR id_producto = :id
-                  )
-                  ORDER BY nombre ASC
-                  LIMIT 20";
+                FROM productos
+                WHERE activo = 1
+                AND nombre LIKE :nombre";
+
+        if (ctype_digit($busqueda)) {
+            $query .= " OR (activo = 1 AND id_producto = :id)";
+        }
+
+        $query .= " ORDER BY nombre ASC LIMIT 20";
 
         $stmt = $this->conexion->prepare($query);
 
-        $id = ctype_digit($busqueda) ? (int)$busqueda : 0;
+        $stmt->bindValue(
+            ':nombre',
+            '%' . $busqueda . '%',
+            PDO::PARAM_STR
+        );
 
-        $stmt->execute([
-            ':nombre' => '%' . $busqueda . '%',
-            ':id' => $id
-        ]);
+        if (ctype_digit($busqueda)) {
+            $stmt->bindValue(
+                ':id',
+                (int) $busqueda,
+                PDO::PARAM_INT
+            );
+        }
 
-        return $stmt->fetchAll();
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

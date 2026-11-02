@@ -1,4 +1,16 @@
 
+USE don_pancho;
+
+-- ============================================================
+-- DML - AUTOPARTES Y REPUESTOS DON PANCHO
+-- Datos iniciales y productos para el cotizador
+-- ============================================================
+
+
+-- ============================================================
+-- 1. USUARIOS
+-- ============================================================
+
 INSERT INTO usuarios
 (id_usuario, nombre, usuario, `contraseña`, rol)
 VALUES
@@ -18,73 +30,260 @@ VALUES
 '$2y$10$6eMUMLE0h0UUS3SEupUlaumHhJBCXSBhgLU5z2RtKvBlEJsDQi8LK', 'bodeguero');
 
 
--- 2. CATEGORIAS
+-- ============================================================
+-- 2. CATEGORÍAS
+-- ============================================================
 
 INSERT INTO categorias
 (id_categoria, nombre, descripcion, activo)
 VALUES
-(1, 'Frenos y Suspensión', 'Pastillas, discos y amortiguadores', 1),
+(1, 'Frenos y Suspensión',
+ 'Pastillas, discos y amortiguadores', 1),
 
-(2, 'Motor y Transmisión', 'Repuestos relacionados con el motor', 1),
+(2, 'Motor y Transmisión',
+ 'Repuestos relacionados con el motor', 1),
 
-(3, 'Sistema Eléctrico', 'Alternadores, baterias y componentes eléctricos', 1),
+(3, 'Sistema Eléctrico',
+ 'Alternadores, baterias y componentes eléctricos', 1),
 
-(4, 'Fluidos y Lubricantes', 'Aceites, refrigerantes y líquidos automotrices', 1),
+(4, 'Fluidos y Lubricantes',
+ 'Aceites, refrigerantes y líquidos automotrices', 1),
 
-(5, 'Kits de Mantenimiento', 'Kits de afinamiento y mantenimiento preventivo', 1);
+(5, 'Kits de Mantenimiento',
+ 'Kits de afinamiento y mantenimiento preventivo', 1);
 
 
+-- ============================================================
 -- 3. SUCURSALES
+-- ============================================================
 
 INSERT INTO sucursales
 (id_sucursal, nombre, ciudad, direccion, activo)
 VALUES
-(1, 'Sucursal Toncontin', 'Tegucigalpa', 'Boulevard Comunidad Economica Europea', 1),
+(1, 'Sucursal Toncontin', 'Tegucigalpa',
+ 'Boulevard Comunidad Economica Europea', 1),
 
-(2, 'Sucursal Suyapa', 'Tegucigalpa', 'Avenida Suyapa', 1),
+(2, 'Sucursal Suyapa', 'Tegucigalpa',
+ 'Avenida Suyapa', 1),
 
-(3, 'Sucursal Medina', 'San Pedro Sula', 'Barrio Medina', 1),
+(3, 'Sucursal Medina', 'San Pedro Sula',
+ 'Barrio Medina', 1),
 
-(4, 'Sucursal CA-13', 'La Ceiba', 'Carretera CA-13', 1),
+(4, 'Sucursal CA-13', 'La Ceiba',
+ 'Carretera CA-13', 1),
 
-(5, 'Bodega Central', 'Tegucigalpa', 'Centro de almacenamiento de prueba', 1);
+(5, 'Bodega Central', 'Tegucigalpa',
+ 'Centro de almacenamiento de prueba', 1);
 
 
--- 4. PRODUCTOS
+-- ============================================================
+-- 4. PRODUCTOS INICIALES
+-- ============================================================
+-- El campo viscosidad es NULL cuando no aplica.
 
 INSERT INTO productos
-(id_producto, id_categoria, nombre, descripcion, especificaciones,
- precio, fotografia, marca_vehiculo, tipo_vehiculo, viscosidad, activo)
+(id_producto, id_categoria, nombre, descripcion,
+ especificaciones, precio, fotografia, marca_vehiculo,
+ tipo_vehiculo, viscosidad, activo)
 VALUES
 
 (1, 1, 'Pastillas de freno delanteras',
  'Juego de pastillas para frenos delanteros',
- 'Material semimetalico', 850.00,
- 'pastillas_toyota.jpg', 'Toyota', 'sedan', NULL, 1),
+ 'Material semimetalico',
+ 850.00, 'pastillas_toyota.jpg',
+ 'Toyota', 'sedan', NULL, 1),
 
 (2, 1, 'Amortiguador delantero',
  'Amortiguador para suspension delantera',
- 'Amortiguador hidraulico', 2100.00,
- 'amortiguador_nissan.jpg', 'Nissan', 'suv', NULL, 1),
+ 'Amortiguador hidraulico',
+ 2100.00, 'amortiguador_nissan.jpg',
+ 'Nissan', 'suv', NULL, 1),
 
 (3, 2, 'Filtro de aceite',
  'Filtro para sistema de lubricacion',
- 'Filtro de alto rendimiento', 180.00,
- 'filtro_honda.jpg', 'Honda', 'sedan', NULL, 1),
+ 'Filtro de alto rendimiento',
+ 180.00, 'filtro_honda.jpg',
+ 'Honda', 'sedan', NULL, 1),
 
 (4, 3, 'Alternador',
  'Alternador para sistema electrico',
- 'Alternador de 12 voltios', 2600.00,
- 'alternador_hyundai.jpg', 'Hyundai', 'sedan', NULL, 1),
+ 'Alternador de 12 voltios',
+ 2600.00, 'alternador_hyundai.jpg',
+ 'Hyundai', 'sedan', NULL, 1),
 
 (5, 5, 'Kit de afinamiento',
  'Kit para mantenimiento preventivo',
- 'Incluye componentes basicos de afinamiento', 1450.00,
- 'kit_ford.jpg', 'Ford', 'pickup_4x4', NULL, 1);
+ 'Incluye componentes basicos de afinamiento',
+ 1450.00, 'kit_ford.jpg',
+ 'Ford', 'pickup_4x4', NULL, 1);
 
 
--- 5. INVENTARIO
--- Cada producto se registra en una sucursal diferente.
+-- ============================================================
+-- 5. PRODUCTOS PARA EL COTIZADOR ARMA TU KIT
+-- ============================================================
+-- Se agregan 20 productos para cinco tipos de vehículo.
+-- Las fotografías quedan NULL.
+-- Los aceites incluyen su viscosidad.
+
+
+-- ============================================================
+-- 5.1. TOYOTA COROLLA - SEDÁN
+-- ============================================================
+
+INSERT INTO productos
+(id_producto, id_categoria, nombre, descripcion,
+ especificaciones, precio, fotografia, marca_vehiculo,
+ tipo_vehiculo, viscosidad, activo)
+VALUES
+
+(6, 4, 'Aceite sintético Toyota 5W-30',
+ 'Aceite de motor para mantenimiento preventivo.',
+ 'Viscosidad 5W-30, presentación 4 litros.',
+ 950.00, NULL, 'Toyota', 'sedan', '5W-30', 1),
+
+(7, 2, 'Filtro de aceite Toyota Corolla',
+ 'Filtro de aceite para motor.',
+ 'Filtro compatible con Toyota Corolla.',
+ 220.00, NULL, 'Toyota', 'sedan', NULL, 1),
+
+(8, 2, 'Filtro de aire Toyota Corolla',
+ 'Filtro de aire para motor.',
+ 'Filtro de aire compatible con Toyota Corolla.',
+ 350.00, NULL, 'Toyota', 'sedan', NULL, 1),
+
+(9, 2, 'Bujías Toyota Corolla',
+ 'Juego de bujías para mantenimiento.',
+ 'Juego de 4 bujías.',
+ 600.00, NULL, 'Toyota', 'sedan', NULL, 1);
+
+
+-- ============================================================
+-- 5.2. HONDA CIVIC - SEDÁN
+-- ============================================================
+
+INSERT INTO productos
+(id_producto, id_categoria, nombre, descripcion,
+ especificaciones, precio, fotografia, marca_vehiculo,
+ tipo_vehiculo, viscosidad, activo)
+VALUES
+
+(10, 4, 'Aceite sintético Honda 0W-20',
+ 'Aceite de motor para mantenimiento preventivo.',
+ 'Viscosidad 0W-20, presentación 4 litros.',
+ 1100.00, NULL, 'Honda', 'sedan', '0W-20', 1),
+
+(11, 2, 'Filtro de aceite Honda Civic',
+ 'Filtro de aceite para motor.',
+ 'Filtro compatible con Honda Civic.',
+ 240.00, NULL, 'Honda', 'sedan', NULL, 1),
+
+(12, 2, 'Filtro de aire Honda Civic',
+ 'Filtro de aire para motor.',
+ 'Filtro compatible con Honda Civic.',
+ 380.00, NULL, 'Honda', 'sedan', NULL, 1),
+
+(13, 2, 'Bujías Honda Civic',
+ 'Juego de bujías para mantenimiento.',
+ 'Juego de 4 bujías.',
+ 680.00, NULL, 'Honda', 'sedan', NULL, 1);
+
+
+-- ============================================================
+-- 5.3. HYUNDAI TUCSON - SUV
+-- ============================================================
+
+INSERT INTO productos
+(id_producto, id_categoria, nombre, descripcion,
+ especificaciones, precio, fotografia, marca_vehiculo,
+ tipo_vehiculo, viscosidad, activo)
+VALUES
+
+(14, 4, 'Aceite sintético Hyundai 5W-30',
+ 'Aceite de motor para mantenimiento preventivo.',
+ 'Viscosidad 5W-30, presentación 4 litros.',
+ 980.00, NULL, 'Hyundai', 'suv', '5W-30', 1),
+
+(15, 2, 'Filtro de aceite Hyundai Tucson',
+ 'Filtro de aceite para motor.',
+ 'Filtro compatible con Hyundai Tucson.',
+ 260.00, NULL, 'Hyundai', 'suv', NULL, 1),
+
+(16, 2, 'Filtro de aire Hyundai Tucson',
+ 'Filtro de aire para motor.',
+ 'Filtro compatible con Hyundai Tucson.',
+ 420.00, NULL, 'Hyundai', 'suv', NULL, 1),
+
+(17, 2, 'Bujías Hyundai Tucson',
+ 'Juego de bujías para mantenimiento.',
+ 'Juego de 4 bujías.',
+ 720.00, NULL, 'Hyundai', 'suv', NULL, 1);
+
+
+-- ============================================================
+-- 5.4. NISSAN X-TRAIL - SUV
+-- ============================================================
+
+INSERT INTO productos
+(id_producto, id_categoria, nombre, descripcion,
+ especificaciones, precio, fotografia, marca_vehiculo,
+ tipo_vehiculo, viscosidad, activo)
+VALUES
+
+(18, 4, 'Aceite sintético Nissan 5W-30',
+ 'Aceite de motor para mantenimiento preventivo.',
+ 'Viscosidad 5W-30, presentación 4 litros.',
+ 1050.00, NULL, 'Nissan', 'suv', '5W-30', 1),
+
+(19, 2, 'Filtro de aceite Nissan X-Trail',
+ 'Filtro de aceite para motor.',
+ 'Filtro compatible con Nissan X-Trail.',
+ 250.00, NULL, 'Nissan', 'suv', NULL, 1),
+
+(20, 2, 'Filtro de aire Nissan X-Trail',
+ 'Filtro de aire para motor.',
+ 'Filtro compatible con Nissan X-Trail.',
+ 390.00, NULL, 'Nissan', 'suv', NULL, 1),
+
+(21, 2, 'Bujías Nissan X-Trail',
+ 'Juego de bujías para mantenimiento.',
+ 'Juego de 4 bujías.',
+ 650.00, NULL, 'Nissan', 'suv', NULL, 1);
+
+
+-- ============================================================
+-- 5.5. TOYOTA HILUX - PICKUP 4X4
+-- ============================================================
+
+INSERT INTO productos
+(id_producto, id_categoria, nombre, descripcion,
+ especificaciones, precio, fotografia, marca_vehiculo,
+ tipo_vehiculo, viscosidad, activo)
+VALUES
+
+(22, 4, 'Aceite diesel Toyota Hilux 15W-40',
+ 'Aceite de motor para mantenimiento preventivo.',
+ 'Viscosidad 15W-40, presentación 4 litros.',
+ 1200.00, NULL, 'Toyota', 'pickup_4x4', '15W-40', 1),
+
+(23, 2, 'Filtro de aceite Toyota Hilux',
+ 'Filtro de aceite para motor.',
+ 'Filtro compatible con Toyota Hilux.',
+ 280.00, NULL, 'Toyota', 'pickup_4x4', NULL, 1),
+
+(24, 2, 'Filtro de aire Toyota Hilux',
+ 'Filtro de aire para motor.',
+ 'Filtro compatible con Toyota Hilux.',
+ 480.00, NULL, 'Toyota', 'pickup_4x4', NULL, 1),
+
+(25, 2, 'Bujías Toyota Hilux',
+ 'Juego de bujías para mantenimiento.',
+ 'Juego de 4 bujías.',
+ 750.00, NULL, 'Toyota', 'pickup_4x4', NULL, 1);
+
+
+-- ============================================================
+-- 6. INVENTARIO INICIAL
+-- ============================================================
 
 INSERT INTO inventario
 (id_inventario, id_producto, id_sucursal, cantidad, activo)
@@ -96,12 +295,50 @@ VALUES
 (5, 5, 5, 10, 1);
 
 
--- 6. CLIENTES
--- RTN ficticios para pruebas, no utilizarlos en facturas reales.
+-- ============================================================
+-- 7. INVENTARIO PARA PRODUCTOS DEL COTIZADOR
+-- ============================================================
+-- Se registran 20 unidades por producto
+-- en la sucursal con ID 1.
+
+INSERT INTO inventario
+(id_producto, id_sucursal, cantidad, activo)
+VALUES
+(6, 1, 20, 1),
+(7, 1, 20, 1),
+(8, 1, 20, 1),
+(9, 1, 20, 1),
+
+(10, 1, 20, 1),
+(11, 1, 20, 1),
+(12, 1, 20, 1),
+(13, 1, 20, 1),
+
+(14, 1, 20, 1),
+(15, 1, 20, 1),
+(16, 1, 20, 1),
+(17, 1, 20, 1),
+
+(18, 1, 20, 1),
+(19, 1, 20, 1),
+(20, 1, 20, 1),
+(21, 1, 20, 1),
+
+(22, 1, 20, 1),
+(23, 1, 20, 1),
+(24, 1, 20, 1),
+(25, 1, 20, 1);
+
+
+-- ============================================================
+-- 8. CLIENTES
+-- ============================================================
+-- RTN ficticios para pruebas.
 
 INSERT INTO clientes
 (id_cliente, nombre, rtn, telefono, correo, direccion, activo)
 VALUES
+
 (1, 'Pedro Hernandez', '00000000000001',
  '99990001', 'pedro@gmail.com', 'Tegucigalpa', 1),
 
@@ -118,9 +355,11 @@ VALUES
  '99990005', 'daniel@gmail.com', 'Tegucigalpa', 1);
 
 
--- 7. FACTURAS
--- Los valores de ISV, flete y total son ejemplos de prueba.
--- No se aplicaron descuentos en estas facturas.
+-- ============================================================
+-- 9. FACTURAS
+-- ============================================================
+-- Valores ficticios para pruebas del sistema.
+-- ISV aplicado: 15%.
 
 INSERT INTO facturas
 (id_factura, numero_factura, id_cliente, id_sucursal,
@@ -149,16 +388,51 @@ VALUES
  'camioncito', 0);
 
 
--- 8. DETALLE_FACTURA
--- Cada detalle corresponde a una factura y un producto.
+-- ============================================================
+-- 10. DETALLE DE FACTURAS
+-- ============================================================
 
 INSERT INTO detalle_factura
 (id_detalle, id_factura, id_producto,
  cantidad, precio_unitario, subtotal)
 VALUES
+
 (1, 1, 1, 2, 850.00, 1700.00),
 (2, 2, 2, 1, 2100.00, 2100.00),
 (3, 3, 3, 3, 180.00, 540.00),
 (4, 4, 4, 1, 2600.00, 2600.00),
 (5, 5, 5, 2, 1450.00, 2900.00);
 
+
+
+UPDATE productos
+SET fotografia = CASE id_producto
+    WHEN 6 THEN 'aceite_toyota_5w30.jpg'
+    WHEN 7 THEN 'filtro_aceite_toyota.jpg'
+    WHEN 8 THEN 'filtro_aire_toyota.jpg'
+    WHEN 9 THEN 'bujias_toyota.jpg'
+
+    WHEN 10 THEN 'aceite_honda_0w20.jpg'
+    WHEN 11 THEN 'filtro_aceite_honda.jpg'
+    WHEN 12 THEN 'filtro_aire_honda.jpg'
+    WHEN 13 THEN 'bujias_honda.jpg'
+
+    WHEN 14 THEN 'aceite_hyundai_5w30.jpg'
+    WHEN 15 THEN 'filtro_aceite_hyundai.jpg'
+    WHEN 16 THEN 'filtro_aire_hyundai.jpg'
+    WHEN 17 THEN 'bujias_hyundai.jpg'
+
+    WHEN 18 THEN 'aceite_nissan_5w30.jpg'
+    WHEN 19 THEN 'filtro_aceite_nissan.jpg'
+    WHEN 20 THEN 'filtro_aire_nissan.jpg'
+    WHEN 21 THEN 'bujias_nissan.jpg'
+
+    WHEN 22 THEN 'aceite_hilux_15w40.jpg'
+    WHEN 23 THEN 'filtro_aceite_hilux.jpg'
+    WHEN 24 THEN 'filtro_aire_hilux.jpg'
+    WHEN 25 THEN 'bujias_hilux.jpg'
+END
+WHERE id_producto BETWEEN 6 AND 25;
+-- ============================================================
+-- FIN DEL DML
+-- ============================================================
