@@ -3,7 +3,7 @@ USE don_pancho;
 
 -- ============================================================
 -- DML - AUTOPARTES Y REPUESTOS DON PANCHO
--- Datos iniciales y datos de prueba del sistema
+-- Datos iniciales y productos para el cotizador
 -- ============================================================
 
 
@@ -79,6 +79,7 @@ VALUES
 -- ============================================================
 -- 4. PRODUCTOS INICIALES
 -- ============================================================
+-- El campo viscosidad es NULL cuando no aplica.
 
 INSERT INTO productos
 (id_producto, id_categoria, nombre, descripcion,
@@ -118,14 +119,11 @@ VALUES
 
 
 -- ============================================================
--- 5. PRODUCTOS DE PRUEBA PARA EL COTIZADOR ARMA TU KIT
+-- 5. PRODUCTOS PARA EL COTIZADOR ARMA TU KIT
 -- ============================================================
--- Se registran 20 productos adicionales.
--- Cada grupo contiene aceite, filtro de aceite,
--- filtro de aire y bujías.
--- Los precios son de prueba y están expresados en lempiras.
--- La fotografía se deja NULL porque no se proporcionaron
--- archivos de imagen para estos productos.
+-- Se agregan 20 productos para cinco tipos de vehículo.
+-- Las fotografías quedan NULL.
+-- Los aceites incluyen su viscosidad.
 
 
 -- ============================================================
@@ -286,7 +284,6 @@ VALUES
 -- ============================================================
 -- 6. INVENTARIO INICIAL
 -- ============================================================
--- Cada producto inicial se registra en una sucursal diferente.
 
 INSERT INTO inventario
 (id_inventario, id_producto, id_sucursal, cantidad, activo)
@@ -299,11 +296,10 @@ VALUES
 
 
 -- ============================================================
--- 7. INVENTARIO DE PRODUCTOS DEL COTIZADOR
+-- 7. INVENTARIO PARA PRODUCTOS DEL COTIZADOR
 -- ============================================================
--- Se registran 20 unidades de cada producto adicional
--- en la Sucursal Toncontin, cuyo ID es 1.
--- Los productos del cotizador tienen IDs del 6 al 25.
+-- Se registran 20 unidades por producto
+-- en la sucursal con ID 1.
 
 INSERT INTO inventario
 (id_producto, id_sucursal, cantidad, activo)
@@ -338,7 +334,6 @@ VALUES
 -- 8. CLIENTES
 -- ============================================================
 -- RTN ficticios para pruebas.
--- No utilizarlos en facturas reales.
 
 INSERT INTO clientes
 (id_cliente, nombre, rtn, telefono, correo, direccion, activo)
@@ -363,8 +358,8 @@ VALUES
 -- ============================================================
 -- 9. FACTURAS
 -- ============================================================
--- Los valores de ISV, flete y total son ejemplos de prueba.
--- No se aplicaron descuentos en estas facturas.
+-- Valores ficticios para pruebas del sistema.
+-- ISV aplicado: 15%.
 
 INSERT INTO facturas
 (id_factura, numero_factura, id_cliente, id_sucursal,
@@ -396,7 +391,6 @@ VALUES
 -- ============================================================
 -- 10. DETALLE DE FACTURAS
 -- ============================================================
--- Cada detalle corresponde a una factura y un producto.
 
 INSERT INTO detalle_factura
 (id_detalle, id_factura, id_producto,
