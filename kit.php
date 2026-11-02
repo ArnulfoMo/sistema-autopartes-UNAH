@@ -312,7 +312,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
-/**DATOS DE PRUEBA UTILIZADOS
+<!-- /**DATOS DE PRUEBA UTILIZADOS
 
 USE don_pancho;
 
@@ -515,4 +515,4 @@ ON DUPLICATE KEY UPDATE
     activo = 1;
 
 
-*/
+*/ -->
