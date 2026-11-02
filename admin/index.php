@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../config/conexion.php';
 require_once __DIR__ . '/../includes/header.php'; 
+require_once __DIR__ . '/../includes/auth.php';
+protegerPagina(['admin','bodeguero']);
 
-protegerPagina(['admin', 'bodeguero']);
+
 
 $conexionBD = new ConexionBD();
 $pdo = $conexionBD->conectar();
